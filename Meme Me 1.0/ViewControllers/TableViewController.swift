@@ -12,9 +12,12 @@ class TableViewController: UITableViewController {
     @IBOutlet var memeTableView: UITableViewController!
     
     
-    var memes: [Meme]!
+    var memes: [Meme]! {
     
-    let delegate = UIApplication.shared.delegate as! AppDelegate
+    let object = UIApplication.shared.delegate
+           let appDelegate = object as! AppDelegate
+           return appDelegate.memes
+    }
     
     
     override func viewDidLoad() {
@@ -33,6 +36,7 @@ class TableViewController: UITableViewController {
         
         super.viewDidAppear(animated)
         tableView.reloadData()
+        tabBarController?.tabBar.isHidden = false
         tableView.delegate = self
         
     }
@@ -40,32 +44,9 @@ class TableViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        delegate.memes.count == 0 ? shouldShowAndSetView(true) : shouldShowAndSetView(false)
-        return delegate.memes.count
+        return memes.count
     }
     
-    func shouldShowAndSetView(_ shouldShow: Bool) {
-        
-        if shouldShow {
-            
-            let screenLabel: UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: tableView.frame.height))
-            
-            screenLabel.textAlignment = .center
-            screenLabel.numberOfLines = 2
-            screenLabel.text = "No meme on the memory! Store some"
-            
-            navigationItem.leftBarButtonItem = nil
-            tableView.backgroundView = screenLabel
-            tableView.separatorStyle = .none
-            
-        } else {
-            
-            tableView.backgroundView = nil
-           navigationItem.leftBarButtonItem = editButtonItem
-            
-        }
-        
-    }
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         
@@ -81,23 +62,16 @@ class TableViewController: UITableViewController {
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        
-        if editingStyle == .delete {
-            
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            delegate.memes.remove(at: indexPath.row)
-            
-        }
-        
-    }
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let detailController = self.storyboard!.instantiateViewController(withIdentifier: "MemeDetailViewController") as! MemeDetailViewController
 
+            
             detailController.meme = memes[(indexPath as NSIndexPath).row]
+
+           
             navigationController!.pushViewController(detailController, animated: true)
     }
-    
     
 }
 

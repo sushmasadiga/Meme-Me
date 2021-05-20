@@ -33,7 +33,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     
     @IBAction func ImagePickerView(_ sender: Any) {
-      pickAnImage(sourceType: .photoLibrary)
+        pickAnImage(sourceType: .photoLibrary)
     }
     
     
@@ -211,26 +211,21 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func shareMeme(_ sender: Any) {
-        let image = generateMemedImage()
-        let controller = UIActivityViewController(activityItems: [image], applicationActivities: nil)
-        present(controller, animated: true, completion: nil)
-        controller.completionWithItemsHandler = { ( _, completed, _, error ) in
-            if completed {
+        let memedImage = generateImage()
+        let activityViewController = UIActivityViewController(activityItems: [memedImage], applicationActivities: nil)
+        activityViewController.completionWithItemsHandler = { activityType, completed, returnedItems, error -> () in
+            if (completed) {
                 self.save()
-                print("saved")
-                return
-            } else {
-                print("cancel")
-            }
-            if let shareError = error {
-                print("error while sharing: \(shareError.localizedDescription)")
+                activityViewController.dismiss(animated: true, completion: nil)
             }
         }
-        
+        self.present(activityViewController, animated: true, completion: nil)
     }
     
-    
 }
+
+
+
 
 
 
