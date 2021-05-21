@@ -105,6 +105,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         textField.adjustsFontSizeToFitWidth = true
         textField.textAlignment = .center
         textField.allowsEditingTextAttributes = true
+        topViewTextField.delegate = self
+        bottomViewTextField.delegate = self
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -132,16 +134,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         bottomToolbar.isHidden = hide
     }
     
-    
-    
-    
     func prepareView() {
-        self.topViewTextField.delegate = self
-        self.bottomViewTextField.delegate = self
-        self.setTextField(self.topViewTextField)
-        self.setTextField(self.bottomViewTextField)
+         setTextField(self.topViewTextField)
+        setTextField(self.bottomViewTextField)
     }
-    
     
     override func viewWillAppear(_ animated: Bool) {
         
