@@ -13,10 +13,10 @@ class TableViewController: UITableViewController {
     
     
     var memes: [Meme]! {
-    
-    let object = UIApplication.shared.delegate
-           let appDelegate = object as! AppDelegate
-           return appDelegate.memes
+        
+        let object = UIApplication.shared.delegate
+        let appDelegate = object as! AppDelegate
+        return appDelegate.memes
     }
     
     
@@ -27,11 +27,6 @@ class TableViewController: UITableViewController {
         tableView.rowHeight = UITableView.automaticDimension
     }
     
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    
     override func viewDidAppear(_ animated: Bool) {
         
         super.viewDidAppear(animated)
@@ -41,12 +36,9 @@ class TableViewController: UITableViewController {
         
     }
     
-    
-    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return memes.count
     }
-    
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         
@@ -62,15 +54,11 @@ class TableViewController: UITableViewController {
         return cell
     }
     
-
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let detailController = self.storyboard!.instantiateViewController(withIdentifier: "MemeDetailViewController") as! MemeDetailViewController
-
-            
-            detailController.meme = memes[(indexPath as NSIndexPath).row]
-
-           
-            navigationController!.pushViewController(detailController, animated: true)
+       
+        detailController.meme = memes[(indexPath as NSIndexPath).row]
+        navigationController!.pushViewController(detailController, animated: true)
     }
     
 }

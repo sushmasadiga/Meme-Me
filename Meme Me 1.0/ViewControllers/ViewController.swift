@@ -114,18 +114,26 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     func generateImage() -> UIImage {
         
-        navigationBar.isHidden = true
-        bottomToolbar.isHidden = true
+        hideTopAndBottomBars(true)
         
         UIGraphicsBeginImageContext(self.view.frame.size)
         view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
         let memedImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         
-        navigationBar.isHidden = false
-        bottomToolbar.isHidden = false
+        hideTopAndBottomBars(false)
+        
         return memedImage
     }
+    
+    
+    func hideTopAndBottomBars(_ hide: Bool) {
+        navigationBar.isHidden = hide
+        bottomToolbar.isHidden = hide
+    }
+    
+    
+    
     
     func prepareView() {
         self.topViewTextField.delegate = self
@@ -166,7 +174,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @objc func keyboardWillShow(_ notification:Notification) {
         
         if bottomViewTextField.isFirstResponder {
-            view.frame.origin.y -= getKeyboardHeight(notification)
+            view.frame.origin.y = -getKeyboardHeight(notification)
         }
     }
     
@@ -184,24 +192,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     func save() {
         
-        let meme =  Meme(topText: topViewTextField.text!, bottomText: bottomViewTextField.text!, originalImage: imagePickerView.image!, memedImage: generateMemedImage())
+        let generateImage =  Meme(topText: topViewTextField.text!, bottomText: bottomViewTextField.text!, originalImage: imagePickerView.image!, memedImage: generateImage())
         
         let object = UIApplication.shared.delegate
         let appDelegate = object as! AppDelegate
-        appDelegate.memes.append(meme)
+        appDelegate.memes.append(generateImage)
         dismiss(animated: true, completion: nil)
     }
     
-    func generateMemedImage() -> UIImage {
-        
-        UIGraphicsBeginImageContext(self.view.frame.size)
-        view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
-        let memedImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
-        UIGraphicsEndImageContext()
-        
-        return memedImage
-        
-    }
     
     func setViewControlsToInitialState() {
         imagePickerView.image = nil
